@@ -43,13 +43,25 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <string>
+#include <sstream>
 
 #include <stuff/clientutil.h>
 #include <stuff/util.h>
 #include <stuff/x.h>
 
-char version[] = "wmii9menu-"VERSION" "COPYRIGHT", ©1994 David Hogan, Arnold Robbins";
 
+const std::string& getVersion() noexcept {
+    static std::string _str;
+    static bool init = true;
+    if (init) {
+        init = false;
+        std::stringstream ss;
+        ss << "wmii9menu-" << VERSION << " " << COPYRIGHT << ", ©1994 David Hogan, Arnold Robbins";
+        _str = ss.str();
+    }
+    return _str;
+}
 static Window*	menuwin;
 
 static CTuple	cnorm;
@@ -100,7 +112,7 @@ main(int argc, char **argv)
 
 	ARGBEGIN{
 	case 'v':
-		lprint(1, "%s\n", version);
+		lprint(1, "%s\n", getVersion().c_str());
 		return 0;
 	case 'a':
 		address = EARGF(usage());
