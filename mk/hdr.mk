@@ -23,10 +23,13 @@ FILTER = cat
 EXCFLAGS = $(INCLUDES) -D_XOPEN_SOURCE=600
 
 COMPILE_FLAGS = $(EXCFLAGS) $(CFLAGS)
+XXCOMPILE_FLAGS = $(EXCFLAGS) $(CXXFLAGS)
 COMPILE    = $(SHELL) $(ROOT)/util/compile "$(CC)" "$(PACKAGES)" "$(COMPILE_FLAGS)"
+COMPILEXX  = $(SHELL) $(ROOT)/util/compile "$(CXX)" "$(PACKAGES)" "$(XXCOMPILE_FLAGS)"
 COMPILEPIC = $(SHELL) $(ROOT)/util/compile "$(CC)" "$(PACKAGES)" "$(COMPILE_FLAGS) $(SOCFLAGS)"
 
 LINK   = $(SHELL) $(ROOT)/util/link "$(LD)" "$(PACKAGES)" "$(LIBS) $(LDFLAGS)"
+LINKXX   = $(SHELL) $(ROOT)/util/link "$(CXX)" "$(PACKAGES)" "$(LIBS) $(LDFLAGS)"
 LINKSO = $(SHELL) $(ROOT)/util/link "$(LD)" "$(PACKAGES)" "$(SOLDFLAGS) $(LIBS) $(SHARED)"
 
 CLEANNAME=$(SHELL) $(ROOT)/util/cleanname
@@ -66,6 +69,8 @@ sinclude $(shell echo .)depend
 
 .c.o:
 	$(COMPILE) $@ $<
+.cc.o:
+	$(COMPILEXX) $@ $<
 .c.o_pic:
 	$(COMPILEPIC) $@ $<
 
@@ -74,6 +79,10 @@ sinclude $(shell echo .)depend
 .c.out:
 	$(COMPILE) $(<:.c=.o) $<
 	$(LINK) $@ $(<:.c=.o)
+
+.cc.out:
+	$(COMPILEXX) $(<:.c=.o) $<
+	$(LINKXX) $@ $(<:.c=.o)
 
 .rc.out .awk.out .sh.out:
 	echo FILTER $(BASE)$<
