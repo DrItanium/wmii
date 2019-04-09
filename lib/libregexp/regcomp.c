@@ -485,7 +485,7 @@ regcomp1(char *s, int literal, int dot_type)
 		return 0;
 	}
 	freep = pp->firstinst;
-	classp = pp->class;
+	classp = pp->clazz;
 	errors = 0;
 
 	if(setjmp(regkaboom))
