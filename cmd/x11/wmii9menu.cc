@@ -109,8 +109,8 @@ init_screens(void) {
 int
 main(int argc, char **argv)
 {
-	static char *address;
-	char *cp;
+    std::string address;
+	//char *cp;
 	int i;
 
 	ARGBEGIN{
@@ -136,23 +136,24 @@ main(int argc, char **argv)
 	create_window();
 
 	numitems = argc;
-    //labels = new char*[numitems];
-    //commands = new char*[numitems];
 
 	for(i = 0; i < numitems; i++) {
-        labels.emplace_back(argv[i]);
-        commands.emplace_back(argv[i]);
-		//labels[i] = argv[i];
-		//commands[i] = argv[i];
-		if((cp = strchr(labels[i], ':')) != nil) {
-			*cp++ = '\0';
-			commands[i] = cp;
-		}
-		if(strcmp(labels[i], initial) == 0)
-			cur = i;
+        std::string currArg(argv[i]);
+        if (auto cp = currLabel.find(':'); cp != std::string::npos) {
+            // to the front of the list, this should get us the target label
+            labels.emplace_back(currArg.substr(0, cp));
+            commands.emplace_back(currArg.substr(cp+1));
+        } else {
+            labels.emplace_back(argv[i]);
+            commands.emplace_back(argv[i]);
+        }
+        if (labels.back().empty()) {
+            // ????
+            cur = i;
+        }
 	}
 
-	client_init(address);
+	client_init(address.c_str());
 
 	wborder = strtol(readctl("/ctl", "border "), nil, 10);
 	client_readconfig(&cnorm, &csel, &font);
