@@ -45,6 +45,7 @@
 #include <string.h>
 #include <string>
 #include <sstream>
+#include <list>
 
 #include <stuff/clientutil.h>
 #include <stuff/util.h>
@@ -70,11 +71,13 @@ static Font*	font;
 
 static int	wborder;
 
-static char*	initial = "";
+std::string initial;
 static int	cur;
 
-static char**	labels;		/* list of labels and commands */
-static char**	commands;
+std::list<std::string> labels;
+std::list<std::string> commands;
+//static char**	labels;		/* list of labels and commands */
+//static char**	commands;
 static int	numitems;
 
 void usage(void);
@@ -133,12 +136,14 @@ main(int argc, char **argv)
 	create_window();
 
 	numitems = argc;
-    labels = new char*[numitems];
-    commands = new char*[numitems];
+    //labels = new char*[numitems];
+    //commands = new char*[numitems];
 
 	for(i = 0; i < numitems; i++) {
-		labels[i] = argv[i];
-		commands[i] = argv[i];
+        labels.emplace_back(argv[i]);
+        commands.emplace_back(argv[i]);
+		//labels[i] = argv[i];
+		//commands[i] = argv[i];
 		if((cp = strchr(labels[i], ':')) != nil) {
 			*cp++ = '\0';
 			commands[i] = cp;
