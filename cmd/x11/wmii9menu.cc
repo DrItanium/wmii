@@ -121,8 +121,8 @@ main(int argc, char **argv)
 	create_window();
 
 	numitems = argc;
-	labels = emalloc(numitems * sizeof *labels);
-	commands = emalloc(numitems * sizeof *labels);
+    labels = new char*[numitems];
+    commands = new char*[numitems];
 
 	for(i = 0; i < numitems; i++) {
 		labels[i] = argv[i];
