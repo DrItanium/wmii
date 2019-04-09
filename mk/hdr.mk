@@ -81,8 +81,8 @@ sinclude $(shell echo .)depend
 	$(LINK) $@ $(<:.c=.o)
 
 .cc.out:
-	$(COMPILEXX) $(<:.c=.o) $<
-	$(LINKXX) $@ $(<:.c=.o)
+	$(COMPILEXX) $(<:.cc=.o) $<
+	$(LINKXX) $@ $(<:.cc=.o)
 
 .rc.out .awk.out .sh.out:
 	echo FILTER $(BASE)$<
